@@ -89,8 +89,8 @@ tf_optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
 # Setting up the quasi-newton LBGFS optimizer (set nt_epochs=0 to cancel it)
 nt_epochs = 1000
 
-#@title The PINN class
-class PhysicsInformedNN(object):
+#@title The vfnn class
+class VariationalFunctionalNN(object):
   def __init__(self, input_size, output_size, size_of_block, no_of_resnet_blocks, optimizer, logger, X_f, approx_type="hessian"):
 
     input = tf.keras.Input(shape=(input_size,), name="input")
@@ -396,14 +396,14 @@ class PhysicsInformedNN(object):
     return psi, theta
 
 logger = Logger(frequency=10)
-pinn = PhysicsInformedNN(input_size, output_size, size_of_block, no_of_resnet_blocks, tf_optimizer, logger, x, approx_type="inv_hessian")
-pinn.summary()
+vfnn = VariationalFunctionalNN(input_size, output_size, size_of_block, no_of_resnet_blocks, tf_optimizer, logger, x, approx_type="inv_hessian")
+vfnn.summary()
 
-pinn.rayleighian()
+vfnn.rayleighian()
 
-pinn.sr1_optimize_line_search(iter=10000)
+vfnn.sr1_optimize_line_search(iter=10000)
 
-psi, theta = pinn.predict(x)
+psi, theta = vfnn.predict(x)
 
 np.savetxt('psi_dirich.txt', psi.numpy())
 np.savetxt('theta_dirich.txt', theta.numpy())

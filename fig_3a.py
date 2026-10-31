@@ -351,8 +351,8 @@ nt_config.tolFun = 1e-12
 nt_config.verbose = True
 print(nt_config.tolFun)
 
-#@title The PINN class
-class PhysicsInformedNN(object):
+#@title The vfnn class
+class VariationalFunctionalNN(object):
   def __init__(self, input_size, output_size, size_of_block, no_of_resnet_blocks, optimizer, logger, X_f, x_boundary, u_boundary, approx_type="hessian"):
 
     input = tf.keras.Input(shape=(input_size,), name="input")
@@ -640,12 +640,12 @@ class PhysicsInformedNN(object):
     phi = self.u_model_tot(X_star)
     return phi
 
-## Both stable and unstable solutions can be found by restarting the PhysicsInformedNN class and optimizing the functional. Each restart will optimize from a different random initial guess.
+## Both stable and unstable solutions can be found by restarting the VariationalFunctionalNN class and optimizing the functional. Each restart will optimize from a different random initial guess.
 logger = Logger(frequency=10)
-pinn = PhysicsInformedNN(input_size, output_size, size_of_block, no_of_resnet_blocks, tf_optimizer, logger, x, X_u_train, u_train, approx_type="inv_hessian")
-pinn.summary()
+vfnn = VariationalFunctionalNN(input_size, output_size, size_of_block, no_of_resnet_blocks, tf_optimizer, logger, x, X_u_train, u_train, approx_type="inv_hessian")
+vfnn.summary()
 
-pinn.sr1_optimize_line_search(iter=5000)
+vfnn.sr1_optimize_line_search(iter=5000)
 
 x = np.linspace(0, 1 , 2000, dtype=np.float32).flatten()[:, None]
 gamma_1 = 0.589388
@@ -654,7 +654,7 @@ phi_ver_1 = (1/(2*gamma_1))*np.cosh(gamma_1*(2*x-1))
 phi_ver_2 = (1/(2*gamma_2))*np.cosh(gamma_2*(2*x-1))
 phi_ini = (2*x*(x-1)+1.0)**2
 
-phi_1temp= pinn.predict(x)
+phi_1temp= vfnn.predict(x)
 np.savetxt('minimal_surface_sol_1.txt', phi_1temp.numpy())
 
 phi_1= np.loadtxt('minimal_surface_sol_top.txt')
@@ -682,5 +682,5 @@ plt.legend(
     #frameon=False,
 )
 plt.tight_layout()
-#plt.savefig('min_surf_rev_pinn_sol.png')
-plt.savefig('min_surf_rev_pinn_both_sol.png')
+#plt.savefig('min_surf_rev_vfnn_sol.png')
+plt.savefig('min_surf_rev_vfnn_both_sol.png')
