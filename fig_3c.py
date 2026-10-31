@@ -7,14 +7,14 @@ Original file is located at
     https://colab.research.google.com/drive/1brpQqnMern0I2WvO0Rx0kEddsq7Bks_G
 """
 
-! pip install pyDOE
+# ! pip install pyDOE
 
-# Commented out IPython magic to ensure Python compatibility.
-!pip install ipython-autotime
+# # Commented out IPython magic to ensure Python compatibility.
+# !pip install ipython-autotime
 
-# %load_ext autotime
+# # %load_ext autotime
 
-#!git clone https://github.com/artur-deluca/landscapeviz
+# #!git clone https://github.com/artur-deluca/landscapeviz
 
 import sys
 import os
@@ -36,8 +36,8 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 np.random.seed(313)
 tf.random.set_seed(4564)
 
-from google.colab import drive
-drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
 
 generator = tf.random.Generator.from_seed(1123)
 
@@ -383,9 +383,9 @@ vfnn.sr1_optimize_line_search(iter=2000)
 
 phi = vfnn.predict(x)
 
-np.savetxt('/content/drive/MyDrive/Colab Notebooks/Poisson_boltzmann/phi_poisson_boltzmann.txt', phi.numpy())
+np.savetxt('phi_poisson_boltzmann.txt', phi.numpy())
 
-phi_FEM = np.loadtxt('/content/drive/MyDrive/Colab Notebooks/Poisson_boltzmann/phi_PB_FEM.csv', delimiter=',')
+phi_FEM = np.loadtxt('phi_PB_FEM.csv', delimiter=',')
 
 fig, ax = plt.subplots(figsize=(5,4))
 ax.plot(x, phi, label='vfNN', color='blue',linewidth=5.0)
@@ -395,4 +395,4 @@ ax.set_ylabel(r'$u(x)$', fontsize=20)
 ax.set_xticks([0, 0.5, 1.0])
 ax.set_yticks([0,0.05, 0.1])
 ax.tick_params(axis='both', which='major', length=10, width=2, labelsize=20)
-plt.savefig('/content/drive/MyDrive/Colab Notebooks/Poisson_boltzmann/Poison_oltzmann_ver.png', dpi=300, bbox_inches='tight')
+plt.savefig('Poisson_oltzmann_ver.png', dpi=300, bbox_inches='tight')
